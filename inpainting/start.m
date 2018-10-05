@@ -107,8 +107,10 @@ I_ch2 = I(:,:,2);
 I_ch3 = I(:,:,3);
 
 %TO COMPLETE 1
-mask = ???? ; %mask_img(i,j) == 1 means we have lost information in that pixel
-                                      %mask(i,j) == 0 means we have information in that pixel
+%mask_img(i,j) == 1 means we have lost information in that pixel
+%mask(i,j) == 0 means we have information in that pixel
+% Red is found in a normalized RGB colour channel as (1,0,0)
+mask = (I_ch1 == 1) & (I_ch2 == 0) & (I_ch3 == 0);
 
 %%%Parameters for gradient descent (you do not need for week1)
 %param.dt = 5*10^-7;
@@ -118,8 +120,6 @@ mask = ???? ; %mask_img(i,j) == 1 means we have lost information in that pixel
 %parameters
 param.hi = 1 / (ni-1);
 param.hj = 1 / (nj-1);
-
-% for each channel 
 
 figure(1)
 imshow(I);
