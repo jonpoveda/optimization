@@ -54,7 +54,7 @@ figure(1)
 imshow(I);
 title('Before')
 
-Iinp=sol_Laplace_Equation_Axb(I, mask, param);
+Iinp = G4_Laplace_Equation_Axb(I, mask, param);
 figure(2)
 imshow(Iinp)
 title('After');
@@ -81,9 +81,9 @@ figure(1)
 imshow(I);
 title('Before')
 
-Iinp(:,:,1)=sol_Laplace_Equation_Axb(I(:,:,1), mask(:,:,1), param);
-Iinp(:,:,2)=sol_Laplace_Equation_Axb(I(:,:,2), mask(:,:,2), param);
-Iinp(:,:,3)=sol_Laplace_Equation_Axb(I(:,:,3), mask(:,:,3), param);
+Iinp(:,:,1) = G4_Laplace_Equation_Axb(I(:,:,1), mask(:,:,1), param);
+Iinp(:,:,2) = G4_Laplace_Equation_Axb(I(:,:,2), mask(:,:,2), param);
+Iinp(:,:,3) = G4_Laplace_Equation_Axb(I(:,:,3), mask(:,:,3), param);
 
 figure(2)
 imshow(Iinp)
@@ -125,9 +125,9 @@ figure(1)
 imshow(I);
 title('Before')
 
-Iinp(:,:,1)=sol_Laplace_Equation_Axb(I_ch1, mask, param);
-Iinp(:,:,2)=sol_Laplace_Equation_Axb(I_ch2, mask, param);
-Iinp(:,:,3)=sol_Laplace_Equation_Axb(I_ch3, mask, param);
+Iinp(:,:,1) = G4_Laplace_Equation_Axb(I_ch1, mask, param);
+Iinp(:,:,2) = G4_Laplace_Equation_Axb(I_ch2, mask, param);
+Iinp(:,:,3) = G4_Laplace_Equation_Axb(I_ch3, mask, param);
     
 figure(2)
 imshow(Iinp)

@@ -1,4 +1,4 @@
-function [u] = sol_Laplace_Equation_Axb(f, dom2Inp, param)
+function [u] = G4_Laplace_Equation_Axb(f, dom2Inp, param)
 %this code is not intended to be efficient. 
 
 [ni, nj]=size(f);
