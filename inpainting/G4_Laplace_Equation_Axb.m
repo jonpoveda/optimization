@@ -108,7 +108,6 @@ for i = 1:ni+2
   a_ij(idx) = -1; 
   idx = idx + 1;
 
-  b(p) = 0;
 end
 
 % Inner points
@@ -121,13 +120,33 @@ for j = 2:nj+1
       % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
       % vector b
       % TO COMPLETE 5
-%       ????
-%       ????
-%       ????
-%       .
-%       .
-%       .
+      idx_Ai(idx) = p; 
+      idx_Aj(idx) = p; 
+      a_ij(idx) = 4;
+      idx = idx + 1;
 
+      idx_Ai(idx) = p ;
+      idx_Aj(idx) = p + 1;
+      a_ij(idx) = -1; 
+      idx = idx + 1;
+
+      
+      idx_Ai(idx) = p;
+      idx_Aj(idx) = p - 1;
+      a_ij(idx) = -1; 
+      idx = idx + 1;
+
+      idx_Ai(idx) = p;
+      idx_Aj(idx) = p + (ni+2);
+      a_ij(idx) = -1; 
+      idx = idx + 1;
+      
+      idx_Ai(idx) = p ;
+      idx_Aj(idx) = p - (ni+2);
+      a_ij(idx) = -1; 
+      idx = idx + 1;
+      
+      b(p) = 0;
     else % we do not have to inpaint this pixel 
       % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
       % vector b
