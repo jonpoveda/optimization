@@ -56,6 +56,7 @@ param.hj = 1 / (nj-1);
 
 
 figure(1)
+subplot(1,2,1)
 imshow(I);
 title('Before')
 
@@ -66,7 +67,7 @@ title('After');
 
 %% Challenge image. (We have lost 99% of information)
 clearvars
-I = double(imread('image6_toRestore.jpg'));
+I = double(imread('image6_toRestore.tif'));
 % Normalize values into [0,1]
 I = I / 256;
 
@@ -74,7 +75,7 @@ I = I / 256;
 % Number of pixels for each dimension, and number of channels
 [ni, nj, nC] = size(I);
 
-mask_img = double(imread('image6_mask.jpg'));
+mask_img = double(imread('image6_mask.tif'));
 mask = mask_img > 128; 
 % mask(i,j) == 1 means we have lost information in that pixel
 % mask(i,j) == 0 means we have information in that pixel
