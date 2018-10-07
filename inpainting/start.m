@@ -83,7 +83,8 @@ mask = mask_img > 128;
 param.hi = 1 / (ni-1);
 param.hj = 1 / (nj-1);
 
-figure(1)
+figure(2)
+subplot(1,2,1)
 imshow(I);
 title('Before')
 
@@ -91,7 +92,7 @@ Iinp(:,:,1) = G4_Laplace_Equation_Axb(I(:,:,1), mask(:,:,1), param);
 Iinp(:,:,2) = G4_Laplace_Equation_Axb(I(:,:,2), mask(:,:,2), param);
 Iinp(:,:,3) = G4_Laplace_Equation_Axb(I(:,:,3), mask(:,:,3), param);
 
-figure(2)
+subplot(1,2,2)
 imshow(Iinp)
 title('After');
 
@@ -127,7 +128,8 @@ mask = (I_ch1 == 1) & (I_ch2 == 0) & (I_ch3 == 0);
 param.hi = 1 / (ni-1);
 param.hj = 1 / (nj-1);
 
-figure(1)
+figure(3)
+subplot(1,2,1)
 imshow(I);
 title('Before')
 
