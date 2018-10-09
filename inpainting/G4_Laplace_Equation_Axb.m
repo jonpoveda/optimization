@@ -23,6 +23,10 @@ b = zeros(nPixels,1);
 % Vector counter
 idx = 1;
 
+% Pre-calculate derivative term
+hi2 = param.hi^2;
+hj2 = param.hj^2;
+
 % North side boundary conditions
 i = 1;
 for j = 1:nj+2
@@ -34,12 +38,12 @@ for j = 1:nj+2
   % vector b
   idx_Ai(idx) = p; 
   idx_Aj(idx) = p; 
-  a_ij(idx) = 1;
+  a_ij(idx) = hi2;
   idx = idx + 1;
 
   idx_Ai(idx) = p;
   idx_Aj(idx) = p + 1;
-  a_ij(idx) = -1; 
+  a_ij(idx) = -hi2; 
   idx = idx + 1;
 
   b(p) = 0;
@@ -56,12 +60,12 @@ for j = 1:nj+2
   % TO COMPLETE 2
   idx_Ai(idx) = p; 
   idx_Aj(idx) = p; 
-  a_ij(idx) = 1;
+  a_ij(idx) = hi2;
   idx = idx + 1;
 
   idx_Ai(idx) = p;
   idx_Aj(idx) = p - 1;
-  a_ij(idx) = -1; 
+  a_ij(idx) = -hi2; 
   idx = idx + 1;
 
   b(p) = 0;
@@ -78,12 +82,12 @@ for i = 1:ni+2
   % TO COMPLETE 3
   idx_Ai(idx) = p; 
   idx_Aj(idx) = p; 
-  a_ij(idx) = 1;
+  a_ij(idx) = hj2;
   idx = idx + 1;
 
   idx_Ai(idx) = p;
   idx_Aj(idx) = p + (ni+2);
-  a_ij(idx) = -1; 
+  a_ij(idx) = -hj2; 
   idx = idx + 1;
 
   b(p) = 0;
@@ -100,12 +104,12 @@ for i = 1:ni+2
   % TO COMPLETE 4
   idx_Ai(idx) = p; 
   idx_Aj(idx) = p; 
-  a_ij(idx) = 1;
+  a_ij(idx) = hj2;
   idx = idx + 1;
 
   idx_Ai(idx) = p ;
   idx_Aj(idx) = p - (ni+2);
-  a_ij(idx) = -1; 
+  a_ij(idx) = -hj2; 
   idx = idx + 1;
 
 end
@@ -122,28 +126,28 @@ for j = 2:nj+1
       % TO COMPLETE 5
       idx_Ai(idx) = p; 
       idx_Aj(idx) = p; 
-      a_ij(idx) = 4;
+      a_ij(idx) = 2*hi2 + 2*hj2;
       idx = idx + 1;
 
       idx_Ai(idx) = p ;
       idx_Aj(idx) = p + 1;
-      a_ij(idx) = -1; 
+      a_ij(idx) = -hi2; 
       idx = idx + 1;
 
       
       idx_Ai(idx) = p;
       idx_Aj(idx) = p - 1;
-      a_ij(idx) = -1; 
+      a_ij(idx) = -hi2; 
       idx = idx + 1;
 
       idx_Ai(idx) = p;
       idx_Aj(idx) = p + (ni+2);
-      a_ij(idx) = -1; 
+      a_ij(idx) = -hj2; 
       idx = idx + 1;
       
       idx_Ai(idx) = p ;
       idx_Aj(idx) = p - (ni+2);
-      a_ij(idx) = -1; 
+      a_ij(idx) = -hj2;
       idx = idx + 1;
       
       b(p) = 0;
@@ -165,7 +169,7 @@ end
 % TO COMPLETE 7
 A = sparse(idx_Ai, idx_Aj, a_ij, nPixels, nPixels);
 
-% Solve the sistem of equations
+% Solve the sistem of equations Ax=b
 x = mldivide(A,b);
 
 % From vector to matrix
