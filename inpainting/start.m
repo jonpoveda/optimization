@@ -51,9 +51,13 @@ param.iterMax = 10^4;
 param.tol = 10^-5;
 
 %% Parameters 
+% Two criteria:
+%   * Defined with respect to the image width and height
+%   * Defined by assuming that the distance between 2 pixels is 1 (simpler)
+% Results are fairly similar and nearly indistinguishable (at least
+% subjectively, without computing an analytical error measure).
 param.hi = 1 / (ni-1);
 param.hj = 1 / (nj-1);
-
 
 figure(1)
 subplot(1,2,1)
@@ -80,6 +84,12 @@ mask = mask_img > 128;
 % mask(i,j) == 1 means we have lost information in that pixel
 % mask(i,j) == 0 means we have information in that pixel
 
+%% Parameters 
+% Two criteria:
+%   * Defined with respect to the image width and height
+%   * Defined by assuming that the distance between 2 pixels is 1 (simpler)
+% Results are fairly similar and nearly indistinguishable (at least
+% subjectively, without computing an analytical error measure).
 param.hi = 1 / (ni-1);
 param.hj = 1 / (nj-1);
 
@@ -119,12 +129,17 @@ I_ch3 = I(:,:,3);
 % Red is found in a normalized RGB colour channel as (1,0,0)
 mask = (I_ch1 == 1) & (I_ch2 == 0) & (I_ch3 == 0);
 
-%%% Parameters for gradient descent (you do not need for week1)
+% Parameters for gradient descent (you do not need for week1)
 % param.dt = 5*10^-7;
 % param.iterMax = 10^4;
 % param.tol = 10^-5;
 
-% parameters
+%% Parameters 
+% Two criteria:
+%   * Defined with respect to the image width and height
+%   * Defined by assuming that the distance between 2 pixels is 1 (simpler)
+% Results are fairly similar and nearly indistinguishable (at least
+% subjectively, without computing an analytical error measure).
 param.hi = 1 / (ni-1);
 param.hj = 1 / (nj-1);
 
