@@ -6,6 +6,8 @@ src = double(imread('girl.png')); % flipped girl, because of the eyes
 param.hi=1;
 param.hj=1;
 
+% Seamless cloning with importing gradients or mixing gradients
+param.method = 'mixing'; % 'importing'
 
 %masks to exchange: Eyes
 mask_src=logical(imread('mask_src_eyes.png'));
@@ -20,6 +22,12 @@ for nC = 1: nChannels
   drivingGrad_i = G4_DiFwd(src(:,:,nC), param.hi);
   drivingGrad_j = G4_DjFwd(src(:,:,nC), param.hj);
 
+  if (isequal(param.method, 'mixing'))
+    dstGrad_i = G4_DiFwd(dst(:,:,nC), param.hi);
+    dstGrad_j = G4_DjFwd(dst(:,:,nC), param.hj);
+    dst_grad = sqrt(dstGrad_i.^2 + dstGrad_j.^2);
+  end
+
   % Final gradient image: add vertical and horizontal gradients to
   % compute the magnitude. We have negative and positive values so we
   % need to use sqrt(a^2+b^2).
@@ -32,6 +40,7 @@ for nC = 1: nChannels
   driving_on_dst(mask_dst(:)) = driving_on_src(mask_src(:));
 
   param.driving = driving_on_dst;
+  param.dst_grad = dst_grad;
 
   dst1(:,:,nC) = G4_Poisson_Equation_Axb(dst(:,:,nC), mask_dst, param);
 end
@@ -58,6 +67,12 @@ for nC = 1: nChannels
 
   driving_on_src = sqrt(drivingGrad_i.^2 + drivingGrad_j.^2);
 
+  if (isequal(param.method, 'mixing'))
+    dstGrad_i = G4_DiFwd(dst(:,:,nC), param.hi);
+    dstGrad_j = G4_DjFwd(dst(:,:,nC), param.hj);
+    dst_grad = sqrt(dstGrad_i.^2 + dstGrad_j.^2);
+  end
+
   driving_on_dst = zeros(size(src(:,:,1)));
   driving_on_dst(mask_dst(:)) = driving_on_src(mask_src(:));
 
@@ -66,4 +81,4 @@ for nC = 1: nChannels
   dst1(:,:,nC) = G4_Poisson_Equation_Axb(dst1(:,:,nC), mask_dst, param);
 end
 
-imshow(dst1/256)
+figure, imshow(dst1/256)
