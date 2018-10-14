@@ -8,7 +8,7 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
   f_ext(2:end-1, 2:end-1) = f;
   dom2Inp_ext = zeros(ni+2, nj+2);
   dom2Inp_ext (2:end-1, 2:end-1) = dom2Inp;
-
+  
   % Store memory for the A matrix and the b vector
   nPixels = (ni+2)*(nj+2); % Number of pixels
 
@@ -57,7 +57,6 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
 
     % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
     % vector b
-    % TO COMPLETE 2
     idx_Ai(idx) = p;
     idx_Aj(idx) = p;
     a_ij(idx) = hi2;
@@ -79,7 +78,6 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
 
     % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
     % vector b
-    % TO COMPLETE 3
     idx_Ai(idx) = p;
     idx_Aj(idx) = p;
     a_ij(idx) = hj2;
@@ -101,7 +99,6 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
 
     % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
     % vector b
-    % TO COMPLETE 4
     idx_Ai(idx) = p;
     idx_Aj(idx) = p;
     a_ij(idx) = hj2;
@@ -123,7 +120,6 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
       if (dom2Inp_ext(i,j) == 1) % If we have to inpaint this pixel
         % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
         % vector b
-        % TO COMPLETE 5
         idx_Ai(idx) = p;
         idx_Aj(idx) = p;
         a_ij(idx) = 2*hi2 + 2*hj2;
@@ -154,7 +150,6 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
       else % we do not have to inpaint this pixel
         % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
         % vector b
-        % TO COMPLETE 6
         idx_Ai(idx) = p;
         idx_Aj(idx) = p;
         a_ij(idx) = 1;
@@ -166,7 +161,6 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
 
   % A is a sparse matrix, so for memory requirements we create a sparse
   % matrix
-  % TO COMPLETE 7
   A = sparse(idx_Ai, idx_Aj, a_ij, nPixels, nPixels);
 
   % Solve the sistem of equations Ax=b
