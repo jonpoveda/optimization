@@ -117,7 +117,7 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
       % from image matrix (i,j) coordinates to vectorial (p) coordinate
       p = (j-1)*(ni+2)+i;
 
-      if (mask_ext(i,j) == 1) % If we have to inpaint this pixel
+      if (mask_ext(i,j) == 1) % If we are in the domain to be edited with poisson
         % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
         % vector b
         idx_Ai(idx) = p;
@@ -129,7 +129,6 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
         idx_Aj(idx) = p + 1;
         a_ij(idx) = -hi2;
         idx = idx + 1;
-
 
         idx_Ai(idx) = p;
         idx_Aj(idx) = p - 1;
@@ -147,6 +146,20 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
         idx = idx + 1;
 
         b(p) = 0;
+
+        if (isequal(param.method, 'mixing'))
+          if (abs(param.driving(i,j)) > abs(param.dst_grad))
+            b(p) = 4 * param.driving(i,j) - (param.driving(i-1,j) +...
+            param.driving(i+1,j) + param.driving(i,j-1) + param.driving(i,j+1));
+          else
+            b(p) = 4 * param.dst_grad(i,j) - (param.dst_grad(i-1,j) +...
+            param.dst_grad(i+1,j) + param.dst_grad(i,j-1) + param.dst_grad(i,j+1));
+          end
+        else
+          b(p) = 4 * param.driving(i,j) -(param.driving(i-1,j) +...
+          param.driving(i+1,j) + param.driving(i,j-1) + ...
+          param.driving(i,j+1));  %0; % change to '4*center -sum(neigbours)'
+        end
       else % we do not have to inpaint this pixel
         % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
         % vector b
@@ -154,7 +167,7 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
         idx_Aj(idx) = p;
         a_ij(idx) = 1;
         idx = idx + 1;
-        b(p) = f_ext(i,j);
+        b(p) = f_ext(i,j);  % Identical to inpainting.
       end
     end
   end
