@@ -1,4 +1,5 @@
 clearvars;
+addpath('../inpainting')
 dst = double(imread('lena.png'));
 src = double(imread('girl.png')); % flipped girl, because of the eyes
 [ni,nj, nChannels]=size(dst);
