@@ -76,8 +76,6 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
     % from image matrix (i,j) coordinates to vectorial (p) coordinate
     p = (j-1)*(ni+2)+i;
 
-    % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
-    % vector b
     idx_Ai(idx) = p;
     idx_Aj(idx) = p;
     a_ij(idx) = hj2;
@@ -97,8 +95,6 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
     % from image matrix (i,j) coordinates to vectorial (p) coordinate
     p = (j-1)*(ni+2)+i;
 
-    % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
-    % vector b
     idx_Ai(idx) = p;
     idx_Aj(idx) = p;
     a_ij(idx) = hj2;
@@ -109,6 +105,7 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
     a_ij(idx) = -hj2;
     idx = idx + 1;
 
+    b(p) = 0;
   end
 
   % Inner points
@@ -117,52 +114,66 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
       % from image matrix (i,j) coordinates to vectorial (p) coordinate
       p = (j-1)*(ni+2)+i;
 
-      if (mask_ext(i,j) == 1) % If we are in the domain to be edited with poisson
-        % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
-        % vector b
+      if (mask_ext(i,j) == 1) % Edit with poisson
+        % Matlab notation: (i,j) ==> i-th row, j-th col.
+        % Center pixel (i,j)
         idx_Ai(idx) = p;
         idx_Aj(idx) = p;
-        a_ij(idx) = 2*hi2 + 2*hj2;
+        a_ij(idx) = 2*hi2 + 2*hj2;  % Diagonal element - curr. pixel
         idx = idx + 1;
 
-        idx_Ai(idx) = p ;
-        idx_Aj(idx) = p + 1;
-        a_ij(idx) = -hi2;
-        idx = idx + 1;
-
-        idx_Ai(idx) = p;
-        idx_Aj(idx) = p - 1;
-        a_ij(idx) = -hi2;
-        idx = idx + 1;
-
-        idx_Ai(idx) = p;
-        idx_Aj(idx) = p + (ni+2);
-        a_ij(idx) = -hj2;
-        idx = idx + 1;
-
-        idx_Ai(idx) = p ;
-        idx_Aj(idx) = p - (ni+2);
-        a_ij(idx) = -hj2;
-        idx = idx + 1;
-
-        b(p) = 0;
-
-        if (isequal(param.method, 'mixing'))
-          if (abs(param.driving(i,j)) > abs(param.dst_grad))
-            b(p) = 4 * param.driving(i,j) - (param.driving(i-1,j) +...
-            param.driving(i+1,j) + param.driving(i,j-1) + param.driving(i,j+1));
-          else
-            b(p) = 4 * param.dst_grad(i,j) - (param.dst_grad(i-1,j) +...
-            param.dst_grad(i+1,j) + param.dst_grad(i,j-1) + param.dst_grad(i,j+1));
-          end
-        else
-          b(p) = 4 * param.driving(i,j) -(param.driving(i-1,j) +...
-          param.driving(i+1,j) + param.driving(i,j-1) + ...
-          param.driving(i,j+1));  %0; % change to '4*center -sum(neigbours)'
+        % ------- Boundaries -------
+        % Check if the neighbours belong to the mask
+        % If we are in the border (some of them outside), fill in
+        % dest image values (eq(7) in original paper).
+        % Neighbour(i-1,j)
+        if mask_ext(i-1,j) == 0 % known upper-pixel
+          b(p) = b(p) + f_ext(i-1,j);
+        else                    % Unknown boundary
+          % Upper pixel (i-1,j)
+          idx_Ai(idx) = p;
+          idx_Aj(idx) = p - 1;
+          a_ij(idx) = -hi2;
+          idx = idx + 1;
         end
-      else % we do not have to inpaint this pixel
-        % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
-        % vector b
+
+        % Neighbour(i+1,j)
+        if mask_ext(i+1,j) == 0 % known bottom-pixel
+          b(p) = b(p) + f_ext(i+1,j);
+        else                    % Unknown boundary
+          % Bottom pixel (i+1,j)
+          idx_Ai(idx) = p ;
+          idx_Aj(idx) = p + 1;
+          a_ij(idx) = -hi2;
+          idx = idx + 1;
+        end
+
+        % Neighbour(i,j-1)
+        if mask_ext(i,j-1) == 0 % known left-pixel
+          b(p) = b(p) + f_ext(i,j-1);
+        else                    % Unknown boundary
+          % Left pixel (i,j-1)
+          idx_Ai(idx) = p ;
+          idx_Aj(idx) = p - (ni+2);
+          a_ij(idx) = -hj2;
+          idx = idx + 1;
+        end
+
+        % Neighbour(i,j+1)
+        if mask_ext(i,j+1) == 0 % known right-pixel
+          b(p) = b(p) + f_ext(i,j+1);
+        else                    % Unknown boundary
+          % Right pixel (i,j+1)
+          idx_Ai(idx) = p;
+          idx_Aj(idx) = p + (ni+2);
+          a_ij(idx) = -hj2;
+          idx = idx + 1;
+        end
+
+        % Update the vector b with the laplacian value at (i,j)
+        b(p) = b(p) - param.driving_lap(i,j);
+
+      else        % we know the value of this pixel (destination)
         idx_Ai(idx) = p;
         idx_Aj(idx) = p;
         a_ij(idx) = 1;
