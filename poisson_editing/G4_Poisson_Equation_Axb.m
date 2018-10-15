@@ -171,7 +171,7 @@ function [u] = G4_Poisson_Equation_Axb(f, mask, param)
         end
 
         % Update the vector b with the laplacian value at (i,j)
-        b(p) = b(p) - param.driving_lap(i,j);
+        b(p) = b(p) - param.lap(i,j);
 
       else        % we know the value of this pixel (destination)
         idx_Ai(idx) = p;
