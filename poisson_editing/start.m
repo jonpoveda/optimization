@@ -4,8 +4,8 @@ dst = double(imread('lena.png'));
 src = double(imread('girl.png')); % flipped girl, because of the eyes
 [ni,nj, nChannels]=size(dst);
 
-param.hi=1;
-param.hj=1;
+param.hi = 1;
+param.hj = 1;
 
 % Seamless cloning with importing gradients or mixing gradients
 param.method = 'mixing'; % 'importing'
@@ -15,7 +15,6 @@ mask_src=logical(imread('mask_src_eyes.png'));
 mask_dst=logical(imread('mask_dst_eyes.png'));
 
 for nC = 1: nChannels
-
   %TO DO: COMPLETE the ??
   % Fwd or backward gradient?
   % The professor recommended for first order (gradient) to use forward
