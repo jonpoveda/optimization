@@ -1,4 +1,4 @@
-function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
+function [u] = G4_Poisson_Equation_Axb(f, mask, param)
   % this code is not intended to be efficient.
 
   [ni, nj] = size(f);
@@ -6,9 +6,9 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
   % We add the ghost boundaries (for the boundary conditions)
   f_ext = zeros(ni+2, nj+2);
   f_ext(2:end-1, 2:end-1) = f;
-  dom2Inp_ext = zeros(ni+2, nj+2);
-  dom2Inp_ext (2:end-1, 2:end-1) = dom2Inp;
-  
+  mask_ext = zeros(ni+2, nj+2);
+  mask_ext(2:end-1, 2:end-1) = mask;
+
   % Store memory for the A matrix and the b vector
   nPixels = (ni+2)*(nj+2); % Number of pixels
 
@@ -117,7 +117,7 @@ function [u] = G4_Poisson_Equation_Axb(f, dom2Inp, param)
       % from image matrix (i,j) coordinates to vectorial (p) coordinate
       p = (j-1)*(ni+2)+i;
 
-      if (dom2Inp_ext(i,j) == 1) % If we have to inpaint this pixel
+      if (mask_ext(i,j) == 1) % If we have to inpaint this pixel
         % Fill Idx_Ai, idx_Aj and a_ij with the corresponding values and
         % vector b
         idx_Ai(idx) = p;
