@@ -1,8 +1,17 @@
 clearvars;
-addpath('../inpainting')
+equalize = false;
 
-dst = double(imread('lena.png'));
-src = double(imread('girl.png')); % flipped girl, because of the eyes
+dst = imread('lena.png');
+src = imread('girl.png'); % flipped girl, because of the eyes
+
+if equalize
+  dst = colour_equalize(dst);
+  src = colour_equalize(src);
+end
+
+dst = double(dst);
+src = double(src);
+
 [ni,nj, nChannels]=size(dst);
 
 param.hi=1;
@@ -10,7 +19,7 @@ param.hj=1;
 
 % Seamless cloning with importing gradients or mixing gradients (optional)
 param.method = 'importing';
-% param.method = 'mixing';
+%param.method = 'mixing';
 
 % ---- Mask(s) ----
 % Masks to exchange: Eyes
