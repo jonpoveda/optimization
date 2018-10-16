@@ -1,8 +1,22 @@
 clearvars;
-equalize = false;
 
+% Sets parameters
+% Seamless cloning with importing gradients or mixing gradients (optional)
+param.method = 'importing';
+%param.method = 'mixing';
+
+% Apply colour equalization on input images or not
+equalize = false;
+%equalize = true;
+
+% Sets gradients normalization
+param.hi=1;
+param.hj=1;
+
+% Loads images
 dst = imread('lena.png');
 src = imread('girl.png'); % flipped girl, because of the eyes
+[ni,nj, nChannels]=size(dst);
 
 if equalize
   dst = colour_equalize(dst);
@@ -11,15 +25,6 @@ end
 
 dst = double(dst);
 src = double(src);
-
-[ni,nj, nChannels]=size(dst);
-
-param.hi=1;
-param.hj=1;
-
-% Seamless cloning with importing gradients or mixing gradients (optional)
-param.method = 'importing';
-%param.method = 'mixing';
 
 % ---- Mask(s) ----
 % Masks to exchange: Eyes
