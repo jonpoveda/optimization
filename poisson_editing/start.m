@@ -44,5 +44,8 @@ for nC = 1: nChannels
   result(:,:,nC) = G4_Poisson_Equation_Axb(result(:,:,nC), mask_dst_mouth, param);
 end
 
+% Scale linearly the range to ensure valid values
+result = uint8(result / max(result(:)) * 255);
+
 % Plot final figure
-figure, imshow(result/256, [])
+figure, imshow(result)
