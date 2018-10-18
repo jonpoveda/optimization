@@ -2,8 +2,10 @@ clearvars;
 
 % Sets parameters
 % Seamless cloning with importing gradients or mixing gradients (optional)
-param.method = 'importing';
-%param.method = 'mixing';
+% param.method = 'importing';
+%param.method = 'importing_diag';
+% param.method = 'mixing';
+param.method = 'mixing2';
 
 % Apply colour equalization on input images or not
 equalize = false;
@@ -62,4 +64,4 @@ end
 result = uint8(result / max(result(:)) * 255);
 
 % Plot final figure
-figure, imshow(result)
+figure, imshow(result), title(param.method)
