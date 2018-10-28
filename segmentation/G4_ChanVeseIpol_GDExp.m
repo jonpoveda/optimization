@@ -59,8 +59,8 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
 
     %A and B estimation (A y B from the Pascal Getreuer's IPOL paper "Chan
     %Vese segmentation
-    A = ??; %TODO 13: Line to complete
-    B = ??; %TODO 14: Line to complete
+    A = mu ./ (sqrt(eta.^2 + phi_iFwd.^2 + phi_jcent.^2)); %TODO 13: Line to complete
+    B = mu ./ (sqrt(eta.^2 + phi_icent.^2 + phi_jFwd.^2)); %TODO 14: Line to complete
 
     %%Equation 22, for inner points
     phi(??) = ??; %TODO 15: Line to complete
