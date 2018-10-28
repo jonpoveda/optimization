@@ -35,11 +35,11 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     c2 = sum(sum(I(region_c2))) / sum(I(:)); %TODO 2: Line to complete
 
     %Boundary conditions
-    phi(1,:)   = ??; %TODO 3: Line to complete
-    phi(end,:) = ??; %TODO 4: Line to complete
+    phi(1,:)   = phi(2,:); %0; %TODO 3: Line to complete
+    phi(end,:) = phi(end-1,:);%0; %TODO 4: Line to complete
 
-    phi(:,1)   = ??; %TODO 5: Line to complete
-    phi(:,end) = ??; %TODO 6: Line to complete
+    phi(:,1)   = phi(:,2); %0; %TODO 5: Line to complete
+    phi(:,end) = phi(:,end-1); %0; %TODO 6: Line to complete
 
     %Regularized Dirac's Delta computation
     delta_phi = G4_diracReg(phi, epHeaviside);   %notice delta_phi = H'(phi)
