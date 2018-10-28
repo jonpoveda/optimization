@@ -22,14 +22,17 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
   phi = phi_0;
   dif = inf;
   nIter = 0;
+
   while dif>tol && nIter<iterMax
 
     phi_old = phi;
     nIter = nIter + 1;
 
     %Fixed phi, Minimization w.r.t c1 and c2 (constant estimation)
-    c1 = ??; %TODO 1: Line to complete
-    c2 = ??; %TODO 2: Line to complete
+    region_c1 = logical(phi >= 0);
+    region_c2 = logical(phi < 0);
+    c1 = sum(sum(I(region_c1))) / sum(I(:)); %TODO 1: Line to complete
+    c2 = sum(sum(I(region_c2))) / sum(I(:)); %TODO 2: Line to complete
 
     %Boundary conditions
     phi(1,:)   = ??; %TODO 3: Line to complete
