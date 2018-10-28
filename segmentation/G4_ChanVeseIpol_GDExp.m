@@ -54,8 +54,8 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     phi_jBwd  = DjBwd(phi, epHeaviside); %TODO 10: Line to complete
 
     %centered finite diferences
-    phi_icent   = DiFwd(phi, epHeaviside/2) + DiBwd(phi, epHeaviside/2); %TODO 11: Line to complete
-    phi_jcent   = DjFwd(phi, epHeaviside/2) + DjBwd(phi, epHeaviside/2); %TODO 12: Line to complete
+    phi_icent   = DiFwd(phi, epHeaviside)/2 + DiBwd(phi, epHeaviside)/2; %TODO 11: Line to complete
+    phi_jcent   = DjFwd(phi, epHeaviside)/2 + DjBwd(phi, epHeaviside)/2; %TODO 12: Line to complete
 
     %A and B estimation (A y B from the Pascal Getreuer's IPOL paper "Chan
     %Vese segmentation
