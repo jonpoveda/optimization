@@ -1,4 +1,4 @@
-function [ phi ] = sol_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda2, tol, epHeaviside, dt, iterMax, reIni )
+function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda2, tol, epHeaviside, dt, iterMax, reIni )
   %Implementation of the Chan-Vese segmentation following the explicit
   %gradient descent in the paper of Pascal Getreur "Chan-Vese Segmentation".
   %It is the equation 19 from that paper
@@ -39,7 +39,7 @@ function [ phi ] = sol_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambd
     phi(:,end) = ??; %TODO 6: Line to complete
 
     %Regularized Dirac's Delta computation
-    delta_phi = sol_diracReg(phi, epHeaviside);   %notice delta_phi = H'(phi)
+    delta_phi = G4_diracReg(phi, epHeaviside);   %notice delta_phi = H'(phi)
 
     %derivatives estimation
     %i direction, forward finite differences
