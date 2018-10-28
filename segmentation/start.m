@@ -2,32 +2,53 @@
 clearvars;
 clc
 
+% Examples (each image has diff 'good' parameter values)
+% 'mu' is Lenght parameters
+% Example 1
+I = double(imread('circles.png'));
+mu = 1;
+%mu = 2;
+%mu = 10;
+
+% Example 2
+%I = double(imread('noisedCircles.tif'));
+%mu = 0.1;
+
+% Example 3
 %I = double(imread('zigzag_mask.png'));
 %I = mean(I,3); %To 2D matrix
-I = double(imread('circles.png'));
-%I = double(imread('noisedCircles.tif'));
+
+% Example 4
 %I = double(imread('phantom17.bmp'));
+%mu = 1;
+%mu = 2;
+%mu = 10;
+
+% Example 5
 %I = double(imread('phantom18.bmp'));
+%mu = 0.2;
+%mu = 0.5;
+
+% Example 6
+%I = double(imread('Image_to_Restore.png'));
+%hola carola mu = 1
+%lambda1 = 10^-3; %Hola carola problem
+%lambda2 = 10^-3; %Hola carola problem
+%phi_0 = I; %For the Hola carola problem
+
+% Image normalization
 I = mean(I,3);
 I = I - min(I(:));
 I = I / max(I(:));
 
 [ni, nj] = size(I);
 
-%Lenght and area parameters
-%circles.png mu = 1, mu = 2, mu = 10
-%noisedCircles.tif mu = 0.1
-%phantom17 mu = 1, mu = 2, mu = 10
-%phantom18 mu = 0.2 mu = 0.5
-%hola carola mu = 1
-mu = 1;
+% 'nu' is Area parameter
 nu = 0;
 
 %%Parameters
 lambda1 = 1;
 lambda2 = 1;
-%lambda1 = 10^-3; %Hola carola problem
-%lambda2 = 10^-3; %Hola carola problem
 
 epHeaviside = 1;
 %eta = 0.01;
@@ -50,8 +71,6 @@ p.phi_0 = (-sqrt( (X - round(ni/2)) .^2 + (Y - round(nj/2) ) .^2) + 50);
 %phi_0 = phi_0-min(phi_0(:));
 %phi_0 = 2*phi_0/max(phi_0(:));
 %phi_0 = phi_0-1;
-
-%phi_0 = I; %For the Hola carola problem
 
 phi_0 = phi_0 - min(phi_0(:));
 phi_0 = 2 * phi_0 / max(phi_0(:));
