@@ -2,10 +2,10 @@
 clearvars;
 clc
 
-% Examples (each image has diff 'good' parameter values)
+% Load example (each image has diff 'good' parameter values)
 [I, p] = load_example(1);
 
-% Image normalization
+% Normalise image
 I = mean(I,3);
 I = I - min(I(:));
 I = I / max(I(:));
@@ -15,7 +15,7 @@ I = I / max(I(:));
 % 'nu' is Area parameter
 nu = 0;
 
-% Parameters
+% Sets parameters
 epHeaviside = 1;
 %eta = 0.01;
 eta = 1;
@@ -30,7 +30,7 @@ reIni = 100;
 [X, Y] = meshgrid(1:nj, 1:ni);
 
 
-% Initial phi
+% Initialise phi (if not defined yet)
 if ~isfield(p, 'phi_0')
   p.phi_0 = (-sqrt( (X - round(ni/2)) .^2 + (Y - round(nj/2) ) .^2) + 50);
 
@@ -39,5 +39,5 @@ if ~isfield(p, 'phi_0')
   p.phi_0 = p.phi_0 - 1;
 end
 
-%%Explicit Gradient Descent
+%% Runs Explicit Gradient Descent
 seg = G4_ChanVeseIpol_GDExp(I, p.phi_0, p.mu, nu, eta, p.lambda1, p.lambda2, tol, epHeaviside, dt, iterMax, reIni);
