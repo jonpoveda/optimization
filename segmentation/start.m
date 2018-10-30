@@ -12,23 +12,26 @@ I = I / max(I(:));
 
 [ni, nj] = size(I);
 
-% 'nu' is Area parameter
-nu = 0;
+% Sets parameters from Getreuer's paper
+nu = 0;           % Area weight
+dt = 0.5;         % Time step
+tol = 10^-3;      % convergence tolerance
+epHeaviside = 1;  % Heaviside regularization
+eta = 10^-8;      % Curvature regularization
+reIni = 0;        % No reinitialization
 
-% Sets parameters
+% Sets parameters from given implementation
 epHeaviside = 1;
-%eta = 0.01;
-eta = 1;
+eta = 1;            % 1 OR 0.01
 tol = 0.1;
-%dt = (10^-2) / p.mu;
-dt = (10^-1) / p.mu;
+dt = (10^-1) / p.mu;  % (10^-1)/mu OR (10^-2)/mu;
 iterMax = 100000;
-%reIni = 0; %Try both of them
-%reIni = 500;
-reIni = 100;
+reIni = 100;        % 0 OR 100 OR 500
+
+% Modifies parameters customly
+iterMax = 1000;   % Max iterations (stopper)
 
 [X, Y] = meshgrid(1:nj, 1:ni);
-
 
 % Initialise phi (if not defined yet)
 if ~isfield(p, 'phi_0')
