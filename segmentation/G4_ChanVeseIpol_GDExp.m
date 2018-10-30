@@ -80,6 +80,18 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
       B(2:end-1, 2:end-1) + B(2:end-1, 1:end-2) ...
     )); %TODO 15: Line to complete
 
+    %Diference. This stopping criterium has the problem that phi can
+    %change, but not the zero level set, that it really is what we are
+    %looking for.
+    dif = mean(sum( (phi(:) - phi_old(:)) .^2 ))
+    if dif > maxdif
+      maxdif=dif;
+    end
+    
+    % Plot phi difference across iterations
+    figure(1);
+    plot_dif(dif, nIter, iterMax);
+    
     %Reinitialization of phi
     if reIni>0 && mod(nIter, reIni) == 0
       indGT = phi >= 0;
@@ -92,53 +104,12 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
       phi = phi / nor;
     end
 
-    %Diference. This stopping criterium has the problem that phi can
-    %change, but not the zero level set, that it really is what we are
-    %looking for.
-    dif = mean(sum( (phi(:) - phi_old(:)) .^2 ))
-    if dif > maxdif
-      maxdif=dif;
-    end
-    
-    figure(1);
-    plot(nIter, dif, 'r.');
-    hold on;
-    xlim([1,iterMax]);
-    ylim([0, 250]);
-    xlabel('iter');
-    ylabel('Diff');
-    title('Difference across iterations (phi vs phi_0)');  
-    
     % NOTE: for convenience and speed, only plot once every 100 iterations
     if (mod(nIter,100)==0 || nIter == 1)    
      % (Debug) plot the evolution of 'diff' across iterations
-      
-    figure(2);
-    %Plot the level sets surface
-    subplot(1,2,1)
-    %The level set function
-    h=surfc(phi); %TODO 16: Line to complete
-    % Note: to avoid black surface lines painting the whole surface (lots
-    % of points), remove mesh
-    set(h,'LineStyle','none')
-    colormap(gca, 'jet');
-    hold on
-    %The zero level set over the surface
-    contour(phi<=0, 'r--'); %TODO 17: Line to complete
-    hold off
-    title('Phi Function');
-
-    %Plot the curve evolution over the image
-    subplot(1,2,2)
-    imagesc(I);
-    colormap(gca, 'gray');
-    hold on;
-    contour(phi<=0, 'b-'); %TODO 18: Line to complete
-    title('Image and zero level set of Phi')
-    
-    axis off;
-    hold off
-    drawnow;
-    pause(.0001);
+      figure(2);
+      plot_phi(phi, I);
     end
+    
+
   end

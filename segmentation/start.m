@@ -1,4 +1,4 @@
-%close all;
+close all;
 clearvars;
 clc
 
@@ -30,6 +30,7 @@ reIni = 100;        % 0 OR 100 OR 500
 
 % Modifies parameters customly
 iterMax = 1000;   % Max iterations (stopper)
+reIni = 100;
 
 [X, Y] = meshgrid(1:nj, 1:ni);
 
