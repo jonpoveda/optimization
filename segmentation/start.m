@@ -35,8 +35,8 @@ iterMax = 1000;   % Max iterations (stopper)
 
 % Initialise phi (if not defined yet)
 if ~isfield(p, 'phi_0')
-  p.phi_0 = (-sqrt( (X - round(ni/2)) .^2 + (Y - round(nj/2) ) .^2) + 50);
-
+  p.phi_0 = centered_circle(X, Y, ni, nj);
+  % Normalises phi_0 to [-1,1]
   p.phi_0 = p.phi_0 - min(p.phi_0(:));
   p.phi_0 = 2 * p.phi_0 / max(p.phi_0(:));
   p.phi_0 = p.phi_0 - 1;
