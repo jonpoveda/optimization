@@ -22,7 +22,12 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
   phi = phi_0;
   dif = inf;
   nIter = 0;
+  
 
+  % "Allocate" two figures (one for dif vs iter and one for phi)
+  figure(1);
+  figure(2);
+  maxdif=0;
   while dif>tol && nIter<iterMax
 
     phi_old = phi;
@@ -91,27 +96,49 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     %change, but not the zero level set, that it really is what we are
     %looking for.
     dif = mean(sum( (phi(:) - phi_old(:)) .^2 ))
-
+    if dif > maxdif
+      maxdif=dif;
+    end
+    
+    figure(1);
+    plot(nIter, dif, 'r.');
+    hold on;
+    xlim([1,iterMax]);
+    ylim([0, 250]);
+    xlabel('iter');
+    ylabel('Diff');
+    title('Difference across iterations (phi vs phi_0)');  
+    
+    % NOTE: for convenience and speed, only plot once every 100 iterations
+    if (mod(nIter,100)==0 || nIter == 1)    
+     % (Debug) plot the evolution of 'diff' across iterations
+      
+    figure(2);
     %Plot the level sets surface
     subplot(1,2,1)
     %The level set function
-    surfc(??)  %TODO 16: Line to complete
+    h=surfc(phi); %TODO 16: Line to complete
+    % Note: to avoid black surface lines painting the whole surface (lots
+    % of points), remove mesh
+    set(h,'LineStyle','none')
+    colormap(gca, 'jet');
     hold on
     %The zero level set over the surface
-    contour(??); %TODO 17: Line to complete
+    contour(phi<=0, 'r--'); %TODO 17: Line to complete
     hold off
     title('Phi Function');
 
     %Plot the curve evolution over the image
     subplot(1,2,2)
     imagesc(I);
-    colormap gray;
+    colormap(gca, 'gray');
     hold on;
-    contour(??) %TODO 18: Line to complete
+    contour(phi<=0, 'b-'); %TODO 18: Line to complete
     title('Image and zero level set of Phi')
-
+    
     axis off;
     hold off
     drawnow;
     pause(.0001);
+    end
   end
