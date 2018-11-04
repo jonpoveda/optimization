@@ -22,7 +22,12 @@ function [I, p] = load_example(number)
     %mu = 10;
   case 2
     I = double(imread('noisedCircles.tif'));
-    p.mu = 0.1;
+    [ni, nj] = size(I);
+    [X, Y] = meshgrid(1:nj, 1:ni);
+
+    p.mu = 0.3;
+    p.phi_0 = centered_circle(X, Y, ni, nj);
+
   case 3
     I = double(imread('zigzag_mask.png'));
     I = mean(I,3); %To 2D matrix
