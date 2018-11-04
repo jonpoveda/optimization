@@ -27,7 +27,7 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
   % "Allocate" two figures (one for dif vs iter and one for phi)
   f1 = figure('Name', 'Phi Difference evolution');
   f2 = figure('Name', 'Phi func and level set');
-  f3 = figure('Name', 'Phi func and level set [after reinit]');
+  %f3 = figure('Name', 'Phi func and level set [after reinit]');
   maxdif=0;
   while dif>tol && nIter<iterMax
 
@@ -90,13 +90,13 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     end
     
     % Plot phi difference across iterations
-    figure(f1);
+    set(0,'CurrentFigure',f1);
     plot_dif(dif, nIter, iterMax);
     
     % NOTE: for convenience and speed, only plot once every n-iterations
     if (mod(nIter,50)==0 || nIter == 1)    
       % (Debug) plot the evolution of 'diff' across iterations
-      figure(f2);
+      set(0,'CurrentFigure',f2);
       plot_phi(phi, I);
     end
     
@@ -112,9 +112,9 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
       phi = phi / nor;
       
       %Plot phi reinitialized
-      figure(f3);
-      title('Phi after re-init');
-      plot_phi(phi, I);
+      %set(0,'CurrentFigure',f3);
+      %title('Phi after re-init');
+      %plot_phi(phi, I);
 
     end
 
