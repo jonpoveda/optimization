@@ -94,14 +94,14 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     plot_dif(dif, nIter, iterMax);
     
     % NOTE: for convenience and speed, only plot once every n-iterations
-    if (mod(nIter,50)==0 || nIter == 1)    
+    if (mod(nIter,reIni) == 1)
       % (Debug) plot the evolution of 'diff' across iterations
       set(0,'CurrentFigure',f2);
       plot_phi(phi, I);
     end
     
     %Reinitialization of phi
-    if reIni>0 && mod(nIter, reIni) == 0
+    if reIni > 0 && (mod(nIter,reIni) == 1)
       indGT = phi >= 0;
       indLT = phi < 0;
 
