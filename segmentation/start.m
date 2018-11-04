@@ -37,7 +37,7 @@ reIni = 100;
 % Initialise phi (if not defined yet)
 if ~isfield(p, 'phi_0')
   % p.phi_0 = centered_circle(X, Y, ni, nj);
-  p.phi_0 = checkerboard(X, Y);     % From Getreuer's paper
+  p.phi_0 = checkerboard(X, Y, pi/5, pi/5);     % From Getreuer's paper
 
   % Normalises phi_0 to [-1,1]
   p.phi_0 = p.phi_0 - min(p.phi_0(:));
