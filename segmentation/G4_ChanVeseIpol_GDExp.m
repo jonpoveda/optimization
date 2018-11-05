@@ -84,11 +84,12 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     %Diference. This stopping criterium has the problem that phi can
     %change, but not the zero level set, that it really is what we are
     %looking for.
-    dif = mean(sum( (phi(:) - phi_old(:)) .^2 ))
+    dif = mean(sum( (phi(:) - phi_old(:)) .^2 ));
     if dif > maxdif
       maxdif=dif;
     end
     
+    nIter
     % Plot phi difference across iterations
     set(0,'CurrentFigure',f1);
     plot_dif(dif, nIter, iterMax);
