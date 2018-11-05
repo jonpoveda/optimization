@@ -10,40 +10,16 @@ I = mean(I,3);
 I = I - min(I(:));
 I = I / max(I(:));
 
-[ni, nj] = size(I);
-
-% Sets parameters from Getreuer's paper
-nu = 0;           % Area weight
-dt = 0.5;         % Time step
-tol = 10^-3;      % convergence tolerance
-epHeaviside = 1;  % Heaviside regularization
-eta = 10^-8;      % Curvature regularization
-reIni = 0;        % No reinitialization
-
-% Sets parameters from given implementation
-epHeaviside = 1;
-eta = 1;            % 1 OR 0.01
-tol = 0.1;
-dt = (10^-1) / p.mu;  % (10^-1)/mu OR (10^-2)/mu;
-iterMax = 100000;
-reIni = 100;        % 0 OR 100 OR 500
-
 % Modifies parameters customly
-iterMax = 1000;   % Max iterations (stopper)
-reIni = 100;
-
-[X, Y] = meshgrid(1:nj, 1:ni);
-
-% Initialise phi (if not defined yet)
-if ~isfield(p, 'phi_0')
-  % p.phi_0 = centered_circle(X, Y, ni, nj);
-  p.phi_0 = checkerboard(X, Y, pi/5, pi/5);     % From Getreuer's paper
-
-  % Normalises phi_0 to [-1,1]
-  p.phi_0 = p.phi_0 - min(p.phi_0(:));
-  p.phi_0 = 2 * p.phi_0 / max(p.phi_0(:));
-  p.phi_0 = p.phi_0 - 1;
-end
+% p.nu = 0;           % Area weight
+% p.dt = 0.5;         % Time step
+% p.tol = 10^-3;      % convergence tolerance
+% p.epHeaviside = 1;  % Heaviside regularization
+% p.eta = 10^-8;      % Curvature regularization
+% p.iterMax = 6000;   % Max iterations (stopper)
+% p.reIni = 500;
 
 %% Runs Explicit Gradient Descent
-seg = G4_ChanVeseIpol_GDExp(I, p.phi_0, p.mu, nu, eta, p.lambda1, p.lambda2, tol, epHeaviside, dt, iterMax, reIni);
+seg = G4_ChanVeseIpol_GDExp(I, ...
+  p.phi_0, p.mu, p.nu, p.eta, p.lambda1, p.lambda2, p.tol, ...
+  p.epHeaviside, p.dt, p.iterMax, p.reIni);
