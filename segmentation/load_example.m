@@ -47,11 +47,26 @@ function [I, p] = load_example(number)
 
   case 2
     I = double(imread('noisedCircles.tif'));
+    p.mu = 1.8;
+    p.nu = -0.4;
+    p.lambda1 = 4;
+    p.lambda2 = 1;
+
+    [ni, nj] = size(I);
+    [X, Y] = meshgrid(1:nj, 1:ni);
+    p.phi_0 = centered_circle(X, Y, ni, nj);
+    p.reIni = 100;
+    p.iterMax = 4000;
+
     [ni, nj] = size(I);
     [X, Y] = meshgrid(1:nj, 1:ni);
 
-    p.mu = 0.3;
-    p.phi_0 = centered_circle(X, Y, ni, nj);
+    p.phi_0 = checkerboard(X, Y, pi/10, pi/10);     % From Getreuer's paper
+
+    % Normalises phi_0 to [-1,1]
+    p.phi_0 = p.phi_0 - min(p.phi_0(:));
+    p.phi_0 = 2 * p.phi_0 / max(p.phi_0(:));
+    p.phi_0 = p.phi_0 - 1;
 
   case 3
     I = double(imread('zigzag_mask.png'));
