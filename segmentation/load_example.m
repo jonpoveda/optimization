@@ -59,6 +59,7 @@ function [I, p] = load_example(number)
 
   case 4
     I = double(imread('phantom17.bmp'));
+    I = rgb2gray(I);
     p.mu = 1;
 
   case 5
