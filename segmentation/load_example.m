@@ -79,15 +79,19 @@ function [I, p] = load_example(number)
 
   case 5
     I = double(imread('phantom18.bmp'));
-    p.mu = 0.2;
-    %p.mu = 0.5;
+    p.mu = 0.6;
+    %p.nu = -0.1;
+    p.reIni = 100;
+
+    [ni, nj] = size(I);
+    [X, Y] = meshgrid(1:nj, 1:ni);
 
     %%% This initialization allows a faster convergence for phantom 18
-    %p.phi_0 = (-sqrt( ( X-round(ni/2)).^2 + (Y-round(nj/4)).^2)+50);
-    %Normalization of the initial phi to [-1 1]
-    %p.phi_0 = phi_0-min(phi_0(:));
-    %p.phi_0 = 2*phi_0/max(phi_0(:));
-    %p.phi_0 = phi_0-1;
+    p.phi_0 = (-sqrt( ( X-round(ni/2)).^2 + (Y-round(nj/4)).^2)+50);
+    % Normalization of the initial phi to [-1 1]
+    p.phi_0 = p.phi_0-min(p.phi_0(:));
+    p.phi_0 = 2*p.phi_0/max(p.phi_0(:));
+    p.phi_0 = p.phi_0-1;
 
   case 6
     I = double(imread('Image_to_Restore.png'));
