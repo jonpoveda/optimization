@@ -43,8 +43,8 @@ function [I, p] = load_example(number)
   case 1
     I = double(imread('circles.png'));
     p.mu = 1;
-    %mu = 2;
-    %mu = 10;
+    p.iterMax = 600;
+
   case 2
     I = double(imread('noisedCircles.tif'));
     [ni, nj] = size(I);
