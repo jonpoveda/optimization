@@ -22,7 +22,7 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
   phi = phi_0;
   dif = inf;
   nIter = 0;
-  
+
 
   % "Allocate" two figures (one for dif vs iter and one for phi)
   f1 = figure('Name', 'Phi Difference evolution');
@@ -35,10 +35,7 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     nIter = nIter + 1;
 
     %Fixed phi, Minimization w.r.t c1 and c2 (constant estimation)
-    region_c1 = logical(phi >= 0);
-    region_c2 = logical(phi < 0);
-    c1 = sum(sum(I(region_c1))) / sum(I(:)); %TODO 1: Line to complete
-    c2 = sum(sum(I(region_c2))) / sum(I(:)); %TODO 2: Line to complete
+    [c1, c2] = regionAverages(I, phi)
 
     %Boundary conditions
     phi(1,:)   = phi(2,:); %0; %TODO 3: Line to complete
@@ -88,19 +85,19 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     if dif > maxdif
       maxdif=dif;
     end
-    
+
     nIter
     % Plot phi difference across iterations
     set(0,'CurrentFigure',f1);
     plot_dif(dif, nIter, iterMax);
-    
+
     % NOTE: for convenience and speed, only plot once every n-iterations
     if (mod(nIter,100) == 1)
       % (Debug) plot the evolution of 'diff' across iterations
       set(0,'CurrentFigure',f2);
       plot_phi(phi, I);
     end
-    
+
     %Reinitialization of phi
     if reIni > 0 && (mod(nIter,reIni) == 1)
       indGT = phi >= 0;
@@ -111,7 +108,7 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
       %Normalization [-1 1]
       nor = min(abs(min(phi(:))), max(phi(:)));
       phi = phi / nor;
-      
+
       %Plot phi reinitialized
       %set(0,'CurrentFigure',f3);
       %title('Phi after re-init');
@@ -119,5 +116,5 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
 
     end
 
-    
+
   end
