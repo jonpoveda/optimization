@@ -1,4 +1,4 @@
-function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda2, tol, epHeaviside, dt, iterMax, reIni )
+function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda2, tol, epHeaviside, dt, iterMax, reIni, output_folder)
   %Implementation of the Chan-Vese segmentation following the explicit
   %gradient descent in the paper of Pascal Getreur "Chan-Vese Segmentation".
   %It is the equation 19 from that paper
@@ -96,6 +96,8 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
       % (Debug) plot the evolution of 'diff' across iterations
       set(0,'CurrentFigure',f2);
       plot_phi(phi, I);
+      
+      saveas(f2, fullfile(output_folder, sprintf('fig_%04i.png', nIter)));
     end
 
     %Reinitialization of phi

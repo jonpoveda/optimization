@@ -2,6 +2,10 @@ close all;
 clearvars;
 clc
 
+experiment_name = 'example1'
+output_folder = fullfile('figures/', experiment_name);
+mkdir(output_folder)
+
 % Load example (each image has diff 'good' parameter values)
 [I, p] = load_example(1);
 
@@ -22,4 +26,5 @@ I = I / max(I(:));
 %% Runs Explicit Gradient Descent
 seg = G4_ChanVeseIpol_GDExp(I, ...
   p.phi_0, p.mu, p.nu, p.eta, p.lambda1, p.lambda2, p.tol, ...
-  p.epHeaviside, p.dt, p.iterMax, p.reIni);
+  p.epHeaviside, p.dt, p.iterMax, p.reIni, ...
+  output_folder);
