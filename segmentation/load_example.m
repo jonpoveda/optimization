@@ -103,8 +103,8 @@ switch number
 
 % Default initial phi (if not defined before)
 if ~isfield(p, 'phi_0')
-  [ni, nj] = size(I);
-  [X, Y] = meshgrid(1:nj, 1:ni);
+  [ni, nj, ~] = size(I); % ommit third dimension to work with rgb
+  [X, Y] = meshgrid(0:nj-1, 0:ni-1);
 
   p.phi_0 = checkerboard(X, Y, pi/5, pi/5);     % From Getreuer's paper
 
