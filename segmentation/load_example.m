@@ -99,7 +99,47 @@ switch number
     p.lambda1 = 10^-3;
     p.lambda2 = 10^-3;
     p.phi_0 = I;
-  end
+
+  case 7
+    I = double(imread('wrench.png'));
+    p.mu = 0.18;
+
+  % TODO: tweak parameters for new cases 8-18
+  case 8
+    I = double(imread('europe_lights.png'));
+
+  case 9
+    I = double(imread('moon.png')); % Try centered-circle init on this!
+
+  case 10
+    I = double(imread('bears.jpg'));
+
+  case 11
+    I = double(imread('beavers.jpg'));
+
+  case 12
+    I = double(imread('church.jpg'));
+
+  case 13
+    I = double(imread('penguin.jpg'));
+
+  % NOTE: from here downwards, colour images (good to check if
+  % generalization to RGB works). For now, just average channels.
+  case 14
+    I = double(imread('koala_colour.jpg'));
+
+  case 15
+    I = double(imread('snake_colour.jpg'));
+
+  case 16
+    I = double(imread('windsurf_colour.jpg'));
+
+  case 17
+    I = double(imread('zebras_colour.jpg'));
+
+  case 18
+    I = double(imread('crystal_pyramid_colour.jpg'));
+    end
 
 % Default initial phi (if not defined before)
 if ~isfield(p, 'phi_0')
