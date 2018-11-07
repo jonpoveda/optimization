@@ -29,6 +29,9 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
   ir = [2:nj, nj];   % 'right-pixels (i.e.: in the i direction, rows 2:nj)
   il = [1, 1:nj-1];  % 'left-pixels (i.e.: in the i direction, cols 1:nj-1)
 
+  % Compute initial c1, c2
+  [c1, c2] = regionAverages(I, phi);
+  
   % "Allocate" two figures (one for dif vs iter and one for phi)
   f1 = figure('Name', 'Phi Difference evolution');
   f2 = figure('Name', 'Phi func and level set');
@@ -38,16 +41,6 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
 
     phi_old = phi;
     nIter = nIter + 1;
-
-    %Fixed phi, Minimization w.r.t c1 and c2 (constant estimation)
-    [c1, c2] = regionAverages(I, phi)
-
-    %Boundary conditions
-    phi(1,:)   = phi(2,:); %0; %TODO 3: Line to complete
-    phi(end,:) = phi(end-1,:);%0; %TODO 4: Line to complete
-
-    phi(:,1)   = phi(:,2); %0; %TODO 5: Line to complete
-    phi(:,end) = phi(:,end-1); %0; %TODO 6: Line to complete
 
     %Regularized Dirac's Delta computation
     delta_phi = G4_diracReg(phi, epHeaviside);   %notice delta_phi = H'(phi)
@@ -95,6 +88,16 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     - lambda1 * (I - c1).^2 + lambda2 * (I - c2).^2)) ./...
     (1 + dt .* delta_phi .* (A + A_1 + B + B_1));
   
+    % Impose boundary conditions after update
+    phi(1,:)   = phi(2,:); %0; %TODO 3: Line to complete
+    phi(end,:) = phi(end-1,:);%0; %TODO 4: Line to complete
+
+    phi(:,1)   = phi(:,2); %0; %TODO 5: Line to complete
+    phi(:,end) = phi(:,end-1); %0; %TODO 6: Line to complete
+  
+    % Update the region averages c1, c2
+    [c1, c2] = regionAverages(I, phi);
+    
     %Diference. This stopping criterium has the problem that phi can
     %change, but not the zero level set, that it really is what we are
     %looking for.
