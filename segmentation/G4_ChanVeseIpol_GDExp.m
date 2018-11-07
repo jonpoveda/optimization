@@ -102,7 +102,8 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     %change, but not the zero level set, that it really is what we are
     %looking for.
     %dif = mean(sum( (phi(:) - phi_old(:)) .^2 )); % mean squared-difference
-    dif = sqrt(sum((phi(:)-phi_old(:)).^2)) % L2 difference (Getreuer's paper)
+    dif = sqrt(sum((phi(:)-phi_old(:)).^2)); % L2 difference (Getreuer's paper)
+    fprintf("Iteration: %04i\tphi_diff: %f\n", nIter, dif);
     
     % Alternative difference (counts how many pixels change between the
     % zero level set from previous iteration and the curren one.
@@ -113,7 +114,6 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
       maxdif=dif;
     end
 
-    nIter
     % Plot phi difference across iterations
     set(0,'CurrentFigure',f1);
     plot_dif(dif, nIter, iterMax, maxdif);
@@ -129,6 +129,7 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
 
     %Reinitialization of phi
     if reIni > 0 && (mod(nIter,reIni) == 0)
+      disp("Reinitializing phi")
       indGT = phi >= 0;
       indLT = phi < 0;
 
