@@ -15,6 +15,8 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
   %iterMax          : Maximum number of iterations
   %reIni            : Iterations for reinitialization. 0 means no reinitializacion
 
+  plot_evolution = false
+  
   [ni,nj] = size(I);
   hi = 1;
   hj = 1;
@@ -33,10 +35,12 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
   [c1, c2] = regionAverages(I, phi);
   
   % "Allocate" two figures (one for dif vs iter and one for phi)
-  f1 = figure('Name', 'Phi Difference evolution');
+  f1 = figure('Name', 'Phi difference and Loss evolution');
+  f1s1 = subplot(2,1,1);
+  f1s2 = subplot(2,1,2);
   f2 = figure('Name', 'Phi func and level set');
-  %f3 = figure('Name', 'Phi func and level set [after reinit]');
   maxdif=0;
+  max_image_dif = 0;
   while dif>tol && nIter<iterMax
 
     phi_old = phi;
@@ -103,21 +107,38 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     %looking for.
     %dif = mean(sum( (phi(:) - phi_old(:)) .^2 )); % mean squared-difference
     dif = sqrt(sum((phi(:)-phi_old(:)).^2)); % L2 difference (Getreuer's paper)
-    fprintf("Iteration: %04i\tphi_diff: %f\n", nIter, dif);
     
+    % Image difference: Input image vs Segmentation
+    zero_levelSet = logical((phi >= 0));
+    I_seg = double(zero_levelSet);
+    I_seg(zero_levelSet) = c1;
+    I_seg(~zero_levelSet) = c2;
+    image_dif = sqrt(sum((I(:) - I_seg(:)).^2));
+
+    if image_dif > max_image_dif
+      max_image_dif = image_dif;
+    end
+
     % Alternative difference (counts how many pixels change between the
     % zero level set from previous iteration and the curren one.
     % dif = nnz((phi>=0) & ~zero_set_prev_iter) / (ni * nj);
     % where zero_set_prev_iter should be computed before update as phi>=0
-    
+
     if dif > maxdif
       maxdif=dif;
     end
 
-    % Plot phi difference across iterations
-    set(0,'CurrentFigure',f1);
-    plot_dif(dif, nIter, iterMax, maxdif);
+    if plot_evolution
+      % Plot phi difference across iterations
+      set(0,'CurrentFigure',f1);
+      subplot(f1s1);
+      plot_dif(dif, nIter, iterMax, maxdif);
 
+      % Plot loss across iterations
+      subplot(f1s2);
+      plot_loss(image_dif, nIter, iterMax, max_image_dif);
+    end
+    
     % NOTE: for convenience and speed, only plot once every n-iterations
     if (mod(nIter,100) == 0)
       % (Debug) plot the evolution of 'diff' across iterations
@@ -126,6 +147,8 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
       
       saveas(f2, fullfile(output_folder, sprintf('fig_%04i.png', nIter)));
     end
+
+    fprintf("Iteration: %04i  phi_diff: %f  Image_diff: %f\n", nIter, dif, image_dif);
 
     %Reinitialization of phi
     if reIni > 0 && (mod(nIter,reIni) == 0)
@@ -143,8 +166,6 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
       %set(0,'CurrentFigure',f3);
       %title('Phi after re-init');
       %plot_phi(phi, I);
-
     end
-
-
+    
   end
