@@ -130,6 +130,12 @@ switch number
 
   case 18
     I = double(imread('zebras_colour.jpg'));
+    [ni, nj, ~] = size(I); % ommit third dimension to work with rgb
+    [X, Y] = meshgrid(0:nj-1, 0:ni-1);
+    p.phi_0 = centered_circle(X, Y, nj, ni);     % From Getreuer's paper
+    p.mu = 0.04;           % Length weight
+    p.iterMax = 4000;   % Max iterations (stopper)
+    p.reIni = 100;
 
   case 19
     I = double(imread('crystal_pyramid_colour.jpg'));
