@@ -122,7 +122,7 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     if (mod(nIter,100) == 0)
       % (Debug) plot the evolution of 'diff' across iterations
       set(0,'CurrentFigure',f2);
-      plot_phi(phi, I);
+      plot_phi(phi, I, nIter, c1, c2);
       
       saveas(f2, fullfile(output_folder, sprintf('fig_%04i.png', nIter)));
     end
