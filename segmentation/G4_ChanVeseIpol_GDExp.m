@@ -116,7 +116,7 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     nIter
     % Plot phi difference across iterations
     set(0,'CurrentFigure',f1);
-    plot_dif(dif, nIter, iterMax);
+    plot_dif(dif, nIter, iterMax, maxdif);
 
     % NOTE: for convenience and speed, only plot once every n-iterations
     if (mod(nIter,100) == 0)
