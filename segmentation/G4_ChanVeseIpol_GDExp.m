@@ -27,7 +27,7 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
 
   % Initialise auxiliar indices for phi(i+1,j), phi(i-1,j), etc.
   id = [2:ni, ni];   % 'down'-pixels (i.e.: in the j direction, rows 2:ni)
-  iu = [1, 1:ni-1];  % 'upper'-pixels (i.e.: "  "  "  ", rows 1:ni-1)
+  iu = [1, 1:ni-1];  % 'upper'-pixels (i.e.: in the j direction, rows 1:ni-1)
   ir = [2:nj, nj];   % 'right-pixels (i.e.: in the i direction, rows 2:nj)
   il = [1, 1:nj-1];  % 'left-pixels (i.e.: in the i direction, cols 1:nj-1)
 
