@@ -101,7 +101,14 @@ function [ phi ] = G4_ChanVeseIpol_GDExp( I, phi_0, mu, nu, eta, lambda1, lambda
     %Diference. This stopping criterium has the problem that phi can
     %change, but not the zero level set, that it really is what we are
     %looking for.
-    dif = mean(sum( (phi(:) - phi_old(:)) .^2 ));
+    %dif = mean(sum( (phi(:) - phi_old(:)) .^2 )); % mean squared-difference
+    dif = sqrt(sum((phi(:)-phi_old(:)).^2)) % L2 difference (Getreuer's paper)
+    
+    % Alternative difference (counts how many pixels change between the
+    % zero level set from previous iteration and the curren one.
+    % dif = nnz((phi>=0) & ~zero_set_prev_iter) / (ni * nj);
+    % where zero_set_prev_iter should be computed before update as phi>=0
+    
     if dif > maxdif
       maxdif=dif;
     end
