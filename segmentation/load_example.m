@@ -172,6 +172,21 @@ switch number
     p.mu = 0.04;            % Length weight
     p.iterMax = 4000;       % Max iterations (stopper)
     p.reIni = 100;
+  
+  case 24
+    I = double(imread('crystal_pyramid_colour.jpg'));
+    p.mu = 0.1;            % Length weight
+    p.iterMax = 4000;       % Max iterations (stopper)
+    p.reIni = 100;
+
+  case 25
+    I = double(imread('crystal_pyramid_colour.jpg'));
+    [ni, nj, ~] = size(I); % ommit third dimension to work with rgb
+    [X, Y] = meshgrid(0:nj-1, 0:ni-1);
+    p.phi_0 = (-sqrt( ( X-round(nj/2)).^2 + 4*(Y-round(ni/2)+ni/2).^2) + ni/2);
+    p.mu = 0.1;            % Length weight
+    p.iterMax = 4000;       % Max iterations (stopper)
+    p.reIni = 100;
 end
 
 % Default initial phi (if not defined before)
