@@ -187,6 +187,18 @@ switch number
     p.mu = 0.1;            % Length weight
     p.iterMax = 4000;       % Max iterations (stopper)
     p.reIni = 100;
+  
+  case 25
+    I = double(imread('snake_colour.jpg'));
+%     I = rgb2gray(uint8(I));
+%     p.phi_0 = smooth(I);
+%     [ni, nj, ~] = size(I); % ommit third dimension to work with rgb
+%     [X, Y] = meshgrid(0:nj-1, 0:ni-1);
+%     p.phi_0 = (-sqrt( (X - round(nj/2)) .^2 + (Y - round(ni/2)) .^2) + (ni+nj)/8);
+    
+    p.mu = 0.5;            % Length weight
+    p.iterMax = 4000;       % Max iterations (stopper)
+    p.reIni = 100;    
 end
 
 % Default initial phi (if not defined before)
