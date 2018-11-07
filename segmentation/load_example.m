@@ -158,6 +158,20 @@ switch number
   case 21
     I = double(imread('satellite_spaceJunk.jpg'));
     %p.mu = 0.18;
+
+  case 22
+    I = double(imread('zebras_colour.jpg'));
+    p.mu = 0.02;           % Length weight
+    p.iterMax = 4000;   % Max iterations (stopper)
+    p.reIni = 100;
+
+  case 23
+    I = double(imread('zebras_colour.jpg'));
+    I = rgb2gray(uint8(I));
+    p.phi_0 = smooth(I);
+    p.mu = 0.04;            % Length weight
+    p.iterMax = 4000;       % Max iterations (stopper)
+    p.reIni = 100;
 end
 
 % Default initial phi (if not defined before)
