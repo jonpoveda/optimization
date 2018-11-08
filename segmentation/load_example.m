@@ -88,7 +88,7 @@ switch number
     i = double(stdfilt(I));
     i = i - mean(i(:));
     p.phi_0 = smooth(i, 8);
-    
+
   case 7
     I = double(imread('Image_to_Restore.png'));
     I = mean(I,3);
@@ -143,7 +143,7 @@ switch number
 
   case 19
     I = double(imread('crystal_pyramid_colour.jpg'));
-    
+
   case 20
     I = double(imread('moon_bw.jpg'));
     p.mu = 1;
@@ -151,14 +151,14 @@ switch number
     [ni, nj] = size(I);
     %[X, Y] = meshgrid(1:nj, 1:ni);
     [X, Y] = meshgrid(0:nj-1, 0:ni-1);
-    
+
     %%% This initialization allows a faster convergence for phantom 18
     p.phi_0 = (-sqrt( ( X-round(nj/2)).^2 + (Y-round(ni/2)).^2) + ni);
     % Normalization of the initial phi to [-1 1]
     p.phi_0 = p.phi_0 - min(p.phi_0(:));
     p.phi_0 = 2 * p.phi_0 / max(p.phi_0(:));
     p.phi_0 = p.phi_0-1;
-    
+
   case 21
     I = double(imread('satellite_spaceJunk.jpg'));
     %p.mu = 0.18;
@@ -176,7 +176,7 @@ switch number
     p.mu = 0.04;            % Length weight
     p.iterMax = 4000;       % Max iterations (stopper)
     p.reIni = 100;
-  
+
   case 24
     I = double(imread('crystal_pyramid_colour.jpg'));
     p.mu = 0.1;            % Length weight
@@ -194,22 +194,16 @@ switch number
   
   case 25
     I = double(imread('snake_colour.jpg'));
-%     I = rgb2gray(uint8(I));
-%     p.phi_0 = smooth(I);
-%     [ni, nj, ~] = size(I); % ommit third dimension to work with rgb
-%     [X, Y] = meshgrid(0:nj-1, 0:ni-1);
-%     p.phi_0 = (-sqrt( (X - round(nj/2)) .^2 + (Y - round(ni/2)) .^2) + (ni+nj)/8);
-    
     p.mu = 0.5;            % Length weight
     p.iterMax = 4000;       % Max iterations (stopper)
-    p.reIni = 100;    
-  
+    p.reIni = 100;
+
   case 27
     I = double(imread('phantom19.bmp'));
     p.mu = 0.05;
     p.iterMax = 1000;
     p.reIni = 100;
-    
+
     i = double(stdfilt(I));
     % Modifies input image
     I = i;
