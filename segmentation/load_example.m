@@ -171,8 +171,8 @@ switch number
 
   case 23
     I = double(imread('zebras_colour.jpg'));
-    I = rgb2gray(uint8(I));
-    p.phi_0 = smooth(I);
+    I = rgb2gray(uint8(image));
+    p.phi_0 = smooth(I,4);
     p.mu = 0.04;            % Length weight
     p.iterMax = 4000;       % Max iterations (stopper)
     p.reIni = 100;
