@@ -81,9 +81,13 @@ switch number
 
   case 6
     I = double(imread('phantom19.bmp'));
-    p.mu = 1;
+    p.mu = 0.05;
     p.iterMax = 1000;
-    %p.reIni = 100;  
+    p.reIni = 100;
+
+    i = double(stdfilt(I));
+    i = i - mean(i(:));
+    p.phi_0 = smooth(i, 8);
     
   case 7
     I = double(imread('Image_to_Restore.png'));
@@ -199,13 +203,24 @@ switch number
     p.mu = 0.5;            % Length weight
     p.iterMax = 4000;       % Max iterations (stopper)
     p.reIni = 100;    
+  
+  case 27
+    I = double(imread('phantom19.bmp'));
+    p.mu = 0.05;
+    p.iterMax = 1000;
+    p.reIni = 100;
+    
+    i = double(stdfilt(I));
+    % Modifies input image
+    I = i;
+    i = i - mean(i(:));
+    p.phi_0 = smooth(i, 8);
 end
 
 % Default initial phi (if not defined before)
 if ~isfield(p, 'phi_0')
   [ni, nj, ~] = size(I); % ommit third dimension to work with rgb
   [X, Y] = meshgrid(0:nj-1, 0:ni-1);
-
   p.phi_0 = checkerboard(X, Y, f1, f2);     % From Getreuer's paper
 
   % Normalises phi_0 to [-1,1]
